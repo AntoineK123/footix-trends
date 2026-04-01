@@ -1,5 +1,8 @@
 import { useNavStore } from "@/store/useNavStore";
 
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+
+
 type Country = { code: string; label: string };
 
 const COUNTRIES: Country[] = [
@@ -21,20 +24,26 @@ export function CountrySelCard() {
     const setSelectedCountry = useNavStore((s) => s.setSelectedCountry);
 
 
-    return (
-        <div className="flex flex-wrap md:flex-col gap-2 rounded-xl border bg-white px-4 py-3">
-            {COUNTRIES.map((c) => (
-                <span
-                    key={c.code}
-                    onClick={(e) => { e.preventDefault(); setSelectedCountry(c.code); }}
-                    className={`cursor-pointer rounded-full px-3 py-1 text-sm font-medium transition-colors select-none ${selectedCountry === c.code
-                        ? "bg-blue-500 text-white"
-                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                        }`}
-                >
-                    {c.label}
-                </span>
-            ))}
-        </div>
-    );
+return (
+  <div className="flex flex-wrap md:flex-col gap-2 rounded-xl border px-4 py-3">
+    <ToggleGroup 
+      type="single" 
+      spacing={8} //equivalent du gap entre elements
+      value={selectedCountry ?? ""} 
+      onValueChange={(code) => {setSelectedCountry(code) }} //radix ajoute automatiquement le data-state-on sur la valeur actuelle selectionnee
+      className="flex flex-wrap md:flex-col gap-2 cursor-pointer" //on met le font par defaut 
+    >
+      {COUNTRIES.map((c) => (
+        <ToggleGroupItem
+          key={c.code}
+          value={c.code}
+          className="rounded-xl p-2 data-[state=on]:bg-blue-500 data-[state=on]:text-white cursor-pointer font-normal" //ici si tailwind voit data-state=on dans l'attibut html il va mettre ce qu'il y a apres les ":"
+        >
+          {c.label}
+        </ToggleGroupItem>
+      ))}
+    </ToggleGroup>
+  </div>
+)
+
 }
