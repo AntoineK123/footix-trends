@@ -33,13 +33,13 @@ export function DataTable<TData, TValue>({
  
   return (
     <div className="overflow-hidden rounded-md border overflow-x-auto">
-      <Table>
+      <Table className="max-w-[1900px]">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id} className="">
+                  <TableHead key={header.id}> {/* ON DEFINIE UN MAX WIDTH*/}
                     {header.isPlaceholder
                       ? null
                       : flexRender(

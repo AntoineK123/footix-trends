@@ -55,7 +55,7 @@ export default function MatchesTable() {
 
 
   return (
-    <div >
+    <div>
       {/* affichage conditionnel */}
       {(isLoadingMatches||isLoadingStats) ? (
         <p>Loading matches...</p>

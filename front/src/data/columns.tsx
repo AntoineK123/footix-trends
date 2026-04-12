@@ -21,8 +21,6 @@ export const createColumns = (selectedTeam: string | null): ColumnDef<MergedMatc
     {
         id: "matchResult",
         header: "Final Time Score",
-        size:200,
-        maxSize: 300,
         cell: ({ row }) => {
             const rowData = row.original;
             let scoreColor = ""; //empty text color by default
@@ -50,13 +48,11 @@ export const createColumns = (selectedTeam: string | null): ColumnDef<MergedMatc
     {
         id: "teamTrend5",
         header: "5 Derniers résultats",
-        size:50,
-        cell: ({ row }) => { return row.original.last5Results ? row.original.last5Results : "" }
+        cell: ({ row }) => { return (<span className="">{row.original.last5Results ? row.original.last5Results : ""}</span>)}
     },
     {
         accessorKey: "teamResult",
         header: "Résultat du pari : L'équipe gagne",
-        size:50,
         cell: ({ row }) => {
             return (
                 <span className={`${row.original.teamResult === "W" ? "text-green-700" : "text-red-600"}`}>
@@ -68,7 +64,6 @@ export const createColumns = (selectedTeam: string | null): ColumnDef<MergedMatc
     {
         id: "teamROI5",
         header: "Last 5 matches ROI",
-        size:50,
         cell: ({ row }) => {
             if (!row.original.last5ROI && row.original.last5ROI!==0 ) {
                 return ""
