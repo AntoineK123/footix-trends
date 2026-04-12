@@ -4,6 +4,20 @@ Created on Fri May 10 22:44:05 2024
 
 @author: asusa
 """
+import sys
+import os
+
+# chemin absolu du dossier du script courant
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# on l'ajoute au PYTHONPATH si pas déjà présent
+if current_dir not in sys.path:
+    sys.path.insert(0, current_dir)
+#on force le path du crrent directory a celui ci
+
+import AnalyseDfParis
+import CompileDataParis
+import pandas as pd
 
 "La fonction rentabilité permet d'analyser la performance d'un résultat sur une ou plusieurs saisons et pendant une période plus ou moins spécifique"
 
@@ -15,10 +29,6 @@ def Rentabilite(resultat : str,choix: str, lienDos: str,saison="",debut=0,fin=20
     mettre en parametre :"toutesliste" pour afficher la liste des equipes analysables, ou le nom d'une "equipe" ou bien "toutes"
     //// rajouter un parametre saison si besoin exemple "2122" /// on peut rajouter deux dates si on veut analyser une plage de temps spécifique exemple 20240115 et 202240415 
     """
-    
-    import AnalyseDfParis
-    import CompileDataParis
-    import pandas as pd
 
     #on lance compile data qui va nous sortir la liste des tous les clubs présents dans ons données
     if choix=="toutesliste":
@@ -78,8 +88,7 @@ def EvolRentabilite(resultat : str,choix: str, lienDos: str,saison="",debut=2018
         
     #on désactive les prints qui n'apportent rien 
 
-    import AnalyseDfParis
-    import CompileDataParis
+
     import pandas as pd
     
         
@@ -147,7 +156,6 @@ def MultiEvolRenta(resultat : str,multiequi : list ,choix1equi: str, lienDos: st
     
     #si dans choix on a "toutesliste" on renvoie la liste de toutes les equipes de la saison
     
-    import AnalyseDfParis
     import CompileDataParis
     import pandas as pd
     import DataframeToCsvToExplorer as tocsv
@@ -185,19 +193,18 @@ def MultiEvolRenta(resultat : str,multiequi : list ,choix1equi: str, lienDos: st
                 frames=[dfmultirenta, dfEvolRenta]
                 dfmultirenta= pd.concat(frames, sort=False,ignore_index=True)
 
-        tocsv.export_df_to_csv(dfmultirenta,r"C:\Users\kulekci antoine\Documents\DATA","export15h54")
+        tocsv.export_df_to_csv(dfmultirenta,r"C:\Users\kulekci antoine\Documents\DATA","export16h101104")
         return(dfmultirenta)
     
   
     else:
         if len(choix1equi)>1:
-            print("im here 1")
+
             if Ttsequi.count(choix1equi)>0:
                 #lequipe en question est bien présente dans dons données on fait l'analyse
                 
                 dfmultirenta=EvolRentabilite(resultat,choix1equi,lienDos,saison,debut,fin)
-                print("im here 3")
-                tocsv.export_df_to_csv(dfmultirenta,r"C:\Users\kulekci antoine\Documents\DATA","export15h54")
+                tocsv.export_df_to_csv(dfmultirenta,r"C:\Users\kulekci antoine\Documents\DATA","export14h031104")
                 return(dfmultirenta)
     
         else:

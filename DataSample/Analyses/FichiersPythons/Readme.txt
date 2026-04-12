@@ -2,15 +2,16 @@ Grâce à ces 4 fichiers on peut obtenir l'historique des résultats et de la re
 
 Voici le résumé simplifié de l'utilsiation de ces fichiers :
 
-Foot-data-scrapping :
+Foot-data-scrapping.py :
 
-Fichier python qui utilise la librairie Selenium pour détecter et telecharger les fichiers csv de chaque page pays (du site football-data.co.uk)
+Fichier python qui utilise la librairie Selenium pour détecter et telecharger les fichiers csv de chaque page pays (du site football-data.co.uk).
+Ce fichier est utilisé tout seul il sert uniquement à webscrapper toutes les données sur le web pourp préaparer les futurs analyses.
 
-InitAnalyse va : 
+InitAnalyse est le fichier central qui appel d'autres modules :
 
-1) CompileDataParis va compiler dans un dataFramepropre et standardisé les données qui ont été webscrappées précedemment 
+1) CompileDataParis va compiler dans un dataFramepropre et standardisé les données qui ont été webscrappées précedemment. Il prépare les données pour la vraie analyse. 
 
-2) AnalyseDfParis va prendre cette compile et calculer pour chaque match la rentabilité du pari "Victoire de l'équipe" lors du match et la rentabilité du pari "Victoire de l'équipe" les X dernier matchs avant chaque match de la saison étudiée.
+2) AnalyseDfParis a pour but de boucler sur tous les matches du df précedent pour analyser en profondeur le dataframe de CompileDataParis, il va notamment calculer la rentabilité de chaque équipe sur les X derniers matchs, sortir la liste des derniers résultats de l'équipe ... 
 
 3) Le résultat de cette analyse pour toutes les équipes d'une équipe d'une saison est ensuite exporté et enregistré en CSV
 

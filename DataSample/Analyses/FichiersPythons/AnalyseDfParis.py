@@ -23,10 +23,20 @@ def analysedf(dfpar,resultat,equipe,saison):
     """
     On affecte ci dessus la cote du resultat visé , en fonction de si du choix de paris V N ou 1N par exemple de l'equipe en question'
     """
+    
+    #on ajoute une colonne vide pour les 5 derniers matchs
+    dfpar['last5teamResults']="";
+    
+    #on definie par defaut la valeur Defaite
+    dfpar['teamResult']="D";
+    #on definie par defaut une perte
+    dfpar['PNL']=-100.0
+    dfpar['PNL'].astype(float)
+
+    
+    
     for k in range(len(dfpar)):
             
-        
-            dfpar.at[k,'PNL']=-100
         
         ###ajout de la cote du resultat visé en fonction du choix du paris
             if resultat=="N":
@@ -85,17 +95,22 @@ def analysedf(dfpar,resultat,equipe,saison):
             
             if (resultat =="V" and dfpar.at[k,'HomeTeam']==equipe) or (resultat =="D" and dfpar.at[k,'AwayTeam']==equipe) :
                dfpar.at[k,'PNL']=(float(dfpar.at[k,'CoteResultat'])-1)*100
+               dfpar.at[k,'teamResult']+="V"
         
             if (resultat =="VN" and dfpar.at[k,'HomeTeam']==equipe) or (resultat =="DN" and dfpar.at[k,'AwayTeam']==equipe) :
                dfpar.at[k,'PNL']=(float(dfpar.at[k,'CoteResultat'])-1)*100
+               dfpar.at[k,'teamResult']+="V"
         
         if dfpar.at[k,'FTR']=="A" :
             if (resultat =="V" and dfpar.at[k,'AwayTeam']==equipe) or (resultat =="D" and dfpar.at[k,'HomeTeam']==equipe) :
                dfpar.at[k,'PNL']=(float(dfpar.at[k,'CoteResultat'])-1)*100
+               dfpar.at[k,'teamResult']+="V"
             if (resultat =="VN" and dfpar.at[k,'AwayTeam']==equipe) or (resultat =="DN" and dfpar.at[k,'HomeTeam']==equipe) :
-                dfpar.at[k,'PNL']=(float(dfpar.at[k,'CoteResultat'])-1)*100  
+                dfpar.at[k,'PNL']=(float(dfpar.at[k,'CoteResultat'])-1)*100
+                dfpar.at[k,'teamResult']+="V"
                 
         if dfpar.at[k,'FTR']=="D" :
+            dfpar.at[k,'teamResult']+="N"
             if resultat =="N" :
                dfpar.at[k,'PNL']=(float(dfpar.at[k,'CoteResultat'])-1)*100
             if resultat == "DN" or resultat =="VN" : 
@@ -118,6 +133,7 @@ def analysedf(dfpar,resultat,equipe,saison):
         somme5J=0
         somme10J=0
         sommeJJm1=0
+        last5matchesResStr="";
         saison=""
         
         ROImoin1JJ=0
@@ -167,6 +183,14 @@ def analysedf(dfpar,resultat,equipe,saison):
             ROImoin3J=dfpar.at[k,'ROI-3J']
         
         if k>=5 and dfpar.at[k-5,'Saison']==dfpar.at[k,'Saison']:
+            
+            last5matchesResStr+=dfpar.at[k-5,'teamResult']
+            last5matchesResStr+=dfpar.at[k-4,'teamResult']
+            last5matchesResStr+=dfpar.at[k-3,'teamResult']
+            last5matchesResStr+=dfpar.at[k-2,'teamResult']
+            last5matchesResStr+=dfpar.at[k-1,'teamResult']
+            dfpar.at[k,'last5teamResults']=last5matchesResStr
+            
             somme5J+=dfpar.at[k-1,'PNL']
             somme5J+=dfpar.at[k-2,'PNL']
             somme5J+=dfpar.at[k-3,'PNL']
@@ -220,7 +244,8 @@ def analysedf(dfpar,resultat,equipe,saison):
     #enfin le retour sur investissement global = pnlglobale/mise globale 
     ROI=float((sommemise+sommePNL)/sommemise)
 
-    
+    #on definie last 5 match results comme les 5 derniers resultats du dernier matchs du tableau
+    last5matchesTeamResult=dfpar.at[len(dfpar)-1,'last5teamResults']
     
     
     #calcul le TRJ moyen du dataframe
@@ -244,10 +269,10 @@ def analysedf(dfpar,resultat,equipe,saison):
     
     
     #prepare le dataframe résultat
-    resultatdf={'DateListe':[DateListe],'Saison':[saison],'Equipe':[equipe],'TRJmoy':[moyTrj],'ROI':[ROI],'Nbrdematchs': [nbrmatch],'MoyCoteResultat':[moycotequi],'ROI-10J':[ROImoin10J],'ROI-5J':[ROImoin5J],'ROI-3J':[ROImoin3J],'ROI-2J':[ROImoin2J],'ROIJJ-1':[ROImoin1JJ],'ROIJ':[ROIJ],'CoteJ':[CoteJ],'CoteInvJ':[CoteInv]}
+    resultatdf={'DateListe':[DateListe],'Saison':[saison],'Equipe':[equipe],'TRJmoy':[moyTrj],'ROI':[ROI],'Nbrdematchs': [nbrmatch],'MoyCoteResultat':[moycotequi],'ROI-10J':[ROImoin10J],'ROI-5J':[ROImoin5J],'ROI-3J':[ROImoin3J],'ROI-2J':[ROImoin2J],'ROIJJ-1':[ROImoin1JJ],'ROIJ':[ROIJ],'CoteJ':[CoteJ],'CoteInvJ':[CoteInv],'last5teamResults':[last5matchesTeamResult]}
     
     #on sort la liste des saisons du dataframe
-    liSai=dfpar['Saison'].to_list()
+    liSai=dfpar['Saison'].tolist()
     
     liSai=list(set(liSai))
     #le tuple du resultat dataframe et liste saison
