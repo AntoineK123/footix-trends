@@ -1,4 +1,4 @@
-Vous trouverez dans le dossier "back" le backend du site. 
+Vous trouverez un "snapshot" du dossier "back" le backend du site. Il est simplement démonstratif, afin de montrer ce qu'il y a sous le capot.
 
 Le backend est développé en JavaScript avec le framework NestJS, utilisant Fastify comme serveur HTTP.
 
