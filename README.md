@@ -11,7 +11,7 @@ Projet pédagogique de développement web permettant de consulter :
 L’objectif est de démontrer la construction d’une application complète :  
 **data → traitement → backend → frontend**
 
-## 🚀 Lien : https://footix.onrender.com/
+## 🔗 Lien : https://footix.onrender.com/
 ---
 
 ## 🚀 Fonctionnalités
